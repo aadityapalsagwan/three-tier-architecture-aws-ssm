@@ -75,7 +75,7 @@ This project demonstrates a **Three-Tier Architecture on AWS** with high availab
 ## 🌍 Web Tier Setup
 
 ```bash
-sudo amazon-linux-extras install nginx1 -y
+sudo yum install nginx -y
 cd /etc/nginx
 ls
 sudo rm nginx.conf
@@ -131,6 +131,18 @@ pm2 save
 ---
 
 ## 🗄️ Database Setup (Aurora)
+
+```bash
+# mysql Download command:
+yum install mariadb105 -y
+
+🧪 Verify:
+mysql --version
+
+# Connect (same as MySQL):
+mysql -h <endpoint> -u admin -p
+
+```
 
 # Create a database called webappdb:
 CREATE DATABASE webappdb;   
