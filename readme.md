@@ -246,9 +246,10 @@ Aurora Database
 
 # 👨‍💻 Author
 Aaditya Pal
+
 Cloud & DevOps Enthusiast
 
 # Social Account:
-
 GitHub: https://github.com/aadityapalsagwan
+
 LinkedIn: https://linkedin.com/in/aadityapalsagwan 
