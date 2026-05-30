@@ -1,215 +1,206 @@
-# 🚀 Secure & Scalable Three-Tier AWS Architecture
+# 🚀 Secure & Scalable Three-Tier AWS Architecture on AWS
 
-## 📌 Project Overview
+<p align="center">
+  <img src="architecture/architecture-diagram.png" width="900">
+</p>
 
-This project demonstrates a **Three-Tier Architecture on AWS** with high availability and security using:
+<p align="center">
 
-* Web Tier (Public Subnet)
-* App Tier (Private Subnet)
-* Database Tier (Private Subnet)
+![AWS](https://img.shields.io/badge/AWS-Cloud-orange)
+![Architecture](https://img.shields.io/badge/Architecture-ThreeTier-blue)
+![Availability](https://img.shields.io/badge/High%20Availability-MultiAZ-green)
+![Security](https://img.shields.io/badge/Security-Private%20Subnets-red)
+![SSM](https://img.shields.io/badge/Access-SSM%20Only-success)
 
----
-
-## 🏗️ Architecture
-
-![Architecture](architecture/architecture-diagram.png)
-
----
-
-## 🌐 Network Configuration
-
-### VPC
-
-* CIDR: `10.0.0.0/16`
-
-### Subnets (6 Total)
-
-#### Public Subnets (Web Layer)
-
-* public-web-subnet-AZ-1 → `10.0.0.0/24`
-* public-web-subnet-AZ-2 → `10.0.10.0/24`
-
-#### Private App Subnets
-
-* private-app-subnet-AZ-1 → `10.0.20.0/24`
-* private-app-subnet-AZ-2 → `10.0.30.0/24`
-
-#### Private DB Subnets
-
-* private-db-subnet-AZ-1 → `10.0.40.0/24`
-* private-db-subnet-AZ-2 → `10.0.50.0/24`
+</p>
 
 ---
 
-## ⚙️ Services Used
+## 📖 Project Overview
 
-* EC2 (Web & App Layer)
-* Elastic Load Balancer
-* Amazon Aurora (DB)
-* S3 (Code Storage)
-* IAM (Role-based access)
-* SSM Session Manager (No SSH key used)
+This project demonstrates a production-style Three-Tier AWS Architecture designed following cloud security and high-availability best practices.
 
----
+The infrastructure separates workloads into dedicated layers:
 
-## 🔐 IAM & S3 Setup
+- 🌐 Web Tier (Public Subnets)
+- ⚙️ Application Tier (Private Subnets)
+- 🗄️ Database Tier (Private Subnets)
 
-* Created IAM Role with:
-
-  * `AmazonS3ReadOnlyAccess`
-  * `AmazonSSMManagedInstanceCore`
-
-* Uploaded application code to S3 bucket
-
-* Instances accessed S3 using IAM Role (no access keys used)
+The architecture uses AWS networking, security, storage, database, and management services to build a scalable and secure environment.
 
 ---
 
-## 🔌 Connectivity
+# 🏗️ Architecture Diagram
 
-* No SSH Key used ❌
-* All instances connected via **SSM Session Manager** ✅
+<p align="center">
+  <img src="architecture/architecture-diagram.png">
+</p>
 
 ---
 
-## 🌍 Web Tier Setup
+# 🎯 Architecture Highlights
 
-```bash
+✅ Multi-AZ Deployment
+
+✅ Secure Network Segmentation
+
+✅ No SSH Access
+
+✅ IAM Role-Based Authentication
+
+✅ Private Database Layer
+
+✅ Highly Available Design
+
+✅ S3 Integrated Application Deployment
+
+✅ AWS Systems Manager Session Manager Access
+
+---
+
+# 🌐 Network Design
+
+## VPC
+
+| Component | CIDR |
+|-----------|--------|
+| VPC | 10.0.0.0/16 |
+
+---
+
+## Public Subnets (Web Tier)
+
+| Subnet | CIDR |
+|----------|----------|
+| Public Web Subnet AZ-1 | 10.0.0.0/24 |
+| Public Web Subnet AZ-2 | 10.0.10.0/24 |
+
+---
+
+## Private App Subnets
+
+| Subnet | CIDR |
+|----------|----------|
+| Private App Subnet AZ-1 | 10.0.20.0/24 |
+| Private App Subnet AZ-2 | 10.0.30.0/24 |
+
+---
+
+## Private Database Subnets
+
+| Subnet | CIDR |
+|----------|----------|
+| Private DB Subnet AZ-1 | 10.0.40.0/24 |
+| Private DB Subnet AZ-2 | 10.0.50.0/24 |
+
+---
+
+# ☁️ AWS Services Used
+
+| Service | Purpose |
+|----------|----------|
+| Amazon VPC | Network Isolation |
+| EC2 | Web & Application Servers |
+| Application Load Balancer | Traffic Distribution |
+| Auto Scaling Group | Automatic Scaling |
+| Amazon Aurora MySQL | Database Layer |
+| Amazon S3 | Application Storage |
+| IAM | Secure Access Management |
+| Systems Manager (SSM) | Secure Instance Access |
+
+---
+
+# 🔐 Security Implementation
+
+### IAM Roles
+
+Attached Policies:
+
+- AmazonS3ReadOnlyAccess
+- AmazonSSMManagedInstanceCore
+
+### Security Best Practices
+
+- No SSH Access
+- No Public IP on App Tier
+- No Public IP on Database Tier
+- IAM-Based Authentication
+- Private Subnet Isolation
+- SSM Session Manager Access
+
+---
+
+# 📦 Application Deployment Flow
+
+```text
+Developer
+    │
+    ▼
+ Amazon S3
+    │
+    ▼
+ Web Tier EC2
+    │
+    ▼
+ App Tier EC2
+    │
+    ▼
+ Aurora Database
+```
+🌍 Web Tier Configuration
+
+# Install Nginx
 sudo yum install nginx -y
-cd /etc/nginx
-ls
-sudo rm nginx.conf
-sudo aws s3 cp s3://3tierprojects/nginx.conf .
 sudo systemctl start nginx
 sudo systemctl enable nginx
-chmod -R 755 /home/ec2-user
-sudo chkconfig nginx on
-```
 
----
+# Download Configuration from S3
+aws s3 cp s3://3tierprojects/nginx.conf .
 
-## ⚙️ App Tier Setup
-
-```bash
-# Start by installing NVM (node version manager).
-
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-source ~/.bashrc
-
-# Next, install a compatible version of Node.js:
+⚙️ Application Tier Configuration
+# Install Node.js using NVM
 nvm install 16
 nvm use 16
 
-# PM2 is a daemon process manager that will keep our node.js app running in the background. It will also automatically restart the app if it crashes.:
-npm install -g pm2   
+# Install PM2
+npm install -g pm2
 
-# download our code from our s3 buckets onto our instance:
-cd ~/
+# Deploy Application
+
 aws s3 cp s3://BUCKET_NAME/app-tier/ app-tier --recursive
 
-# Navigate to the app directory, install dependencies, and start the app with pm2.:
-cd ~/app-tier
+cd app-tier
 npm install
+
 pm2 start index.js
-
-# pp is running correctly run the following:
-pm2 list
-
-# status of online, the app is running. If you see errored, then you need to do some troubleshooting.
-pm2 logs
-
-# Right now, pm2 is just making sure our app stays running when we leave the SSM session:
-pm2 startup
-
-# After running this you will see a message:
-sudo env PATH=$PATH:/home/ec2-user/.nvm/versions/node/v16.0.0/bin /home/ec2-user/.nvm/versions/node/v16.0.0/lib/node_modules/pm2/bin/pm2 startup systemd -u ec2-user —hp /home/ec2-user
-
-
 pm2 save
-```
 
----
-
-## 🗄️ Database Setup (Aurora)
-
-```bash
-# mysql Download command:
-yum install mariadb105 -y
-
-🧪 Verify:
-mysql --version
-
-# Connect (same as MySQL):
+🗄️ Aurora Database Configuration
+# Connect to Aurora
 mysql -h <endpoint> -u admin -p
 
-```
+# Create Database
+CREATE DATABASE webappdb;
 
-# Create a database called webappdb:
-CREATE DATABASE webappdb;   
-SHOW DATABASES;
+# Create Transactions Table
+CREATE TABLE transactions(
+id INT AUTO_INCREMENT PRIMARY KEY,
+amount DECIMAL(10,2),
+description VARCHAR(100)
+);
 
-# Create a data table:
-USE webappdb;    
+# Insert Sample Data
+INSERT INTO transactions(amount,description)
+VALUES ('400','groceries');
 
-# create the following transactions:
-CREATE TABLE IF NOT EXISTS transactions(id INT NOT NULL
-AUTO_INCREMENT, amount DECIMAL(10,2), description
-VARCHAR(100), PRIMARY KEY(id));    
-SHOW TABLES;    
+# 📁 Repository Structure
 
-# Insert data into table for use/testing later:
-INSERT INTO transactions (amount,description) VALUES ('400','groceries');   
-
-# Verify that your data was added by executing the following command:
-SELECT * FROM transactions;
-```
-
----
-
-## 📦 S3 Usage
-
-* Uploaded code from local system → S3 bucket
-* EC2 instances pulled code from S3
-
----
-
-## 🎯 Key Features
-
-* Highly Available (Multi-AZ)
-* Secure (Private Subnets for App & DB)
-* No SSH (SSM Based Access)
-* Scalable Architecture
-
----
-
-## 🎥 Project Demo
-
-(Add your screen recording link here)
-
----
-
-## 📸 Screenshots
-
-(Add all step-by-step screenshots in /screenshots folder)
-
----
-
-## 👨‍💻 Author
-
-Aaditya Pal
-
-
-
-
-
-# File Structure:
-
-three-tier-aws-architecture/
+aws-three-tier-web-application
 │
 ├── README.md
+│
 ├── architecture/
-│   ├── architecture-diagram.png   (your image)
-│   └── recording-link.txt         (optional: Google Drive / YouTube link)
+│   └── architecture-diagram.png
 │
 ├── scripts/
 │   ├── web-tier-setup.sh
@@ -222,8 +213,28 @@ three-tier-aws-architecture/
 │   └── iam-s3-setup.md
 │
 └── screenshots/
-    ├── step1.png
-    ├── step2.png
-    └── ...
 
+# 📸 Use service in a Project
+VPC Setup
+Subnet Configuration
+Security Groups
+EC2 Instances
+Load Balancer
+Aurora Database
 
+# 🚀 Key Learnings
+ . Designing Multi-Tier Architectures
+ . AWS Networking Fundamentals
+ . High Availability Design
+ . IAM Security Best Practices
+ . Session Manager Administration
+ . Aurora Database Deployment
+ . S3-Based Application Deployment
+
+# 👨‍💻 Author:
+Aaditya Pal
+Cloud & DevOps Enthusiast
+
+# Social Account:
+GitHub: https://github.com/aadityapalsagwan
+LinkedIn: https://linkedin.com/in/aadityapalsagwan 
