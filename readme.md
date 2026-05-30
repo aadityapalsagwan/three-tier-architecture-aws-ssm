@@ -227,29 +227,28 @@ aws-three-tier-web-application
 └── screenshots/
 ```
 # 📸 Use service in a Project
+```
 VPC Setup
 Subnet Configuration
 Security Groups
 EC2 Instances
 Load Balancer
 Aurora Database
-
+```
 # 🚀 Key Learnings
- . Designing Multi-Tier Architectures
- . AWS Networking Fundamentals
- . High Availability Design
- . IAM Security Best Practices
- . Session Manager Administration
- . Aurora Database Deployment
- . S3-Based Application Deployment
+ - Designing Multi-Tier Architectures
+ - AWS Networking Fundamentals
+ - High Availability Design
+ - IAM Security Best Practices
+ - Session Manager Administration
+ - Aurora Database Deployment
+ - S3-Based Application Deployment
 
 # 👨‍💻 Author
 Aaditya Pal
-
 Cloud & DevOps Enthusiast
 
 # Social Account:
 
 GitHub: https://github.com/aadityapalsagwan
-
 LinkedIn: https://linkedin.com/in/aadityapalsagwan 
