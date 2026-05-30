@@ -150,23 +150,31 @@ Developer
 🌍 Web Tier Configuration
 
 # Install Nginx
+```
 sudo yum install nginx -y
+
 sudo systemctl start nginx
+
 sudo systemctl enable nginx
-
+```
 # Download Configuration from S3
+```
 aws s3 cp s3://3tierprojects/nginx.conf .
-
+```
 ⚙️ Application Tier Configuration
 # Install Node.js using NVM
+```
 nvm install 16
-nvm use 16
 
+nvm use 16
+```
 # Install PM2
+```
 npm install -g pm2
+```
 
 # Deploy Application
-
+```
 aws s3 cp s3://BUCKET_NAME/app-tier/ app-tier --recursive
 
 cd app-tier
@@ -174,27 +182,31 @@ npm install
 
 pm2 start index.js
 pm2 save
-
+```
 🗄️ Aurora Database Configuration
 # Connect to Aurora
+```
 mysql -h <endpoint> -u admin -p
-
+```
 # Create Database
+```
 CREATE DATABASE webappdb;
-
+```
 # Create Transactions Table
+```
 CREATE TABLE transactions(
 id INT AUTO_INCREMENT PRIMARY KEY,
 amount DECIMAL(10,2),
 description VARCHAR(100)
 );
-
+```
 # Insert Sample Data
+```
 INSERT INTO transactions(amount,description)
 VALUES ('400','groceries');
-
+```
 # 📁 Repository Structure
-
+```
 aws-three-tier-web-application
 │
 ├── README.md
@@ -213,7 +225,7 @@ aws-three-tier-web-application
 │   └── iam-s3-setup.md
 │
 └── screenshots/
-
+```
 # 📸 Use service in a Project
 VPC Setup
 Subnet Configuration
@@ -231,10 +243,13 @@ Aurora Database
  . Aurora Database Deployment
  . S3-Based Application Deployment
 
-# 👨‍💻 Author:
+# 👨‍💻 Author
 Aaditya Pal
+
 Cloud & DevOps Enthusiast
 
 # Social Account:
+
 GitHub: https://github.com/aadityapalsagwan
+
 LinkedIn: https://linkedin.com/in/aadityapalsagwan 
